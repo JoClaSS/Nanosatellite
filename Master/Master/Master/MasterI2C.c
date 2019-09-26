@@ -2,19 +2,20 @@
 #include <avr/io.h>
 #include "MasterOperationI2C.h"
 #include <util/delay.h>
+#include <math.h>
 int main(void){
-	DDRB = 0x0F;
-    uint8_t Address = 0x10;
-    uint8_t data = 4;
+	DDRD = 0xFC;
+    uint8_t Address = 0b00010001;
+    uint8_t data;
 	Master_begin();
     while(1){
-		for(int i = 0; i<9; i++){
         Master_Start();
         Master_Send(Address); 
-        Master_Send(i);
+        data = Master_Receive();
         Master_Stop(); 
-		 }
-		}
+		PORTD = (data & 0b11111100);
+	   }
     }
+	
 
 
